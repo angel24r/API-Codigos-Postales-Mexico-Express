@@ -4,10 +4,8 @@ FROM node:18
 # Crear directorio de trabajo
 WORKDIR /app
 
-# Copiar archivos de proyecto
-COPY package*.json ./
-COPY index.js ./
-COPY data ./data
+# Copiar todos los archivos del proyecto (package.json, index.js, views, data, etc)
+COPY . .
 
 # Instalar dependencias
 RUN npm install

@@ -92,6 +92,16 @@ GET /codigo_postal/01234
 
 ---
 
+## 🔗 URL del Proyecto
+
+Puedes acceder a la API en la siguiente dirección:
+
+[https://api-codigos-postales-mexico-express.onrender.com/](https://api-codigos-postales-mexico-express.onrender.com/)
+
+
+---
+
+
 ## 📄 Licencia
 
 Proyecto libre para uso educativo y personal.
