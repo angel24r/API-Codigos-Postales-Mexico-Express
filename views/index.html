@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>API CPMEX</title>
+  <title>API CPMEX - Consulta por Código Postal</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -12,43 +12,159 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
+      justify-content: flex-start;
+      min-height: 100vh;
       margin: 0;
       text-align: center;
     }
     h1 {
       font-size: 3rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.25rem;
       text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
     }
     p {
-      font-size: 1.25rem;
-      margin-bottom: 1.5rem;
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
       text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
     }
-    a.button {
-      color: #fff;
-      background-color: rgba(0,0,0,0.2);
-      padding: 0.75rem 1.5rem;
-      border-radius: 25px;
-      text-decoration: none;
+    label {
       font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      display: block;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    }
+    input[type="text"] {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border-radius: 30px;
+      border: none;
+      width: 180px;
+      max-width: 100%;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+      outline: none;
+      transition: box-shadow 0.3s ease;
+      text-align: center;
+    }
+    input[type="text"]:focus {
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.7);
+    }
+    button {
+      background-color: rgba(0, 0, 0, 0.25);
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      padding: 0.6rem 2.5rem;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      margin-bottom: 2rem;
+    }
+    button:hover {
+      background-color: rgba(0, 0, 0, 0.45);
+      box-shadow: 0 7px 20px rgba(0,0,0,0.3);
+    }
+    pre {
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 1.5rem;
+      border-radius: 20px;
+      width: 90vw;
+      max-width: 700px;
+      height: 350px;
+      overflow-y: auto;
+      text-align: left;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 1rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      color: #d0f0fd;
+    }
+    .error {
+      color: #ff6b6b;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+    }
+    a.button-github {
+      color: #fff;
+      background-color: rgba(0,0,0,0.25);
+      padding: 0.75rem 2rem;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 700;
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
       transition: background-color 0.3s ease;
-      margin: 0.5rem 0;
+      margin-top: 1rem;
+      margin-bottom: 0;
       display: inline-block;
-      min-width: 200px;
     }
-    a:hover {
-      background-color: rgba(0,0,0,0.4);
+    a.button-github:hover {
+      background-color: rgba(0,0,0,0.45);
     }
   </style>
 </head>
 <body>
   <h1>API CPMEX</h1>
   <p>Consulta colonias por código postal en México</p>
-  <a href="/codigo_postal/06050 " target="_blank" class="button">Ejemplo: Código Postal 06050</a>
-  <a href="https://github.com/angel24r/API-Codigos-Postales-Mexico-Express" target="_blank" class="button">Ver en GitHub</a>
+
+  <label for="cp-input">Ingresa un código postal (5 dígitos):</label>
+  <input type="text" id="cp-input" maxlength="5" pattern="\d{5}" placeholder="Ej. 06050" />
+
+  <button id="search-btn">Buscar</button>
+
+  <div id="error-msg" class="error" style="display:none;"></div>
+
+  <pre id="result-console">Aquí aparecerá el resultado...</pre>
+
+  <a href="https://github.com/tu_usuario/tu_repositorio" target="_blank" class="button-github">Ver en GitHub</a>
+
+  <script>
+    const input = document.getElementById('cp-input');
+    const button = document.getElementById('search-btn');
+    const resultConsole = document.getElementById('result-console');
+    const errorMsg = document.getElementById('error-msg');
+
+    button.addEventListener('click', () => {
+      const cp = input.value.trim();
+      errorMsg.style.display = 'none';
+      resultConsole.textContent = 'Buscando...';
+
+      if (!/^\d{5}$/.test(cp)) {
+        errorMsg.textContent = 'Por favor, ingresa un código postal válido de 5 dígitos.';
+        errorMsg.style.display = 'block';
+        resultConsole.textContent = '';
+        return;
+      }
+
+      fetch(`/codigo_postal/${cp}`)
+        .then(response => {
+          if (!response.ok) {
+            return response.json().then(data => {
+              throw new Error(data.error || 'Error desconocido');
+            });
+          }
+          return response.json();
+        })
+        .then(data => {
+          resultConsole.textContent = JSON.stringify(data, null, 2);
+        })
+        .catch(err => {
+          errorMsg.textContent = err.message;
+          errorMsg.style.display = 'block';
+          resultConsole.textContent = '';
+        });
+    });
+
+    // Opcional: hacer búsqueda al presionar Enter
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        button.click();
+      }
+    });
+  </script>
 </body>
 </html>
