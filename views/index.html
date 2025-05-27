@@ -108,19 +108,23 @@
   </style>
 </head>
 <body>
-  <h1>API CPMEX</h1>
-  <p>Consulta colonias por código postal en México</p>
+    <h1>API CPMEX</h1>
+    <p>Consulta colonias por código postal en México</p>
 
-  <label for="cp-input">Ingresa un código postal (5 dígitos):</label>
-  <input type="text" id="cp-input" maxlength="5" pattern="\d{5}" placeholder="Ej. 06050" />
+    <label for="cp-input">Ingresa un código postal (5 dígitos):</label>
+    <input type="text" id="cp-input" maxlength="5" pattern="\d{5}" placeholder="Ej. 06050" />
 
-  <button id="search-btn">Buscar</button>
+    <button id="search-btn">Buscar</button>
 
-  <div id="error-msg" class="error" style="display:none;"></div>
+    <div id="error-msg" class="error" style="display:none;"></div>
 
-  <pre id="result-console">Aquí aparecerá el resultado...</pre>
+    <pre id="result-console">Aquí aparecerá el resultado...</pre>
 
-  <a href="https://github.com/tu_usuario/tu_repositorio" target="_blank" class="button-github">Ver en GitHub</a>
+    <a href="https://github.com/tu_usuario/tu_repositorio" target="_blank" class="button-github">Ver en GitHub</a>
+    
+    <footer style="margin-top: 2rem; text-align: center; color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">
+        Desarrollado por <a href="https://github.com/angel24r" target="_blank" style="color: #61dafb; text-decoration: none;">Angel</a>
+    </footer>
 
   <script>
     const input = document.getElementById('cp-input');
