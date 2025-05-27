@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const app = express();
 const port = 3000;
 
@@ -13,7 +14,7 @@ app.use((req, res, next) => {
 
 // Ruta raíz
 app.get('/', (req, res) => {
-  res.send('API CPMEX - Consulta de colonias por código postal');
+  res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
 // Ruta para consultar por código postal
