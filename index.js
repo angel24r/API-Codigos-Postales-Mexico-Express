@@ -42,7 +42,7 @@ app.get('/codigo_postal/:cp', (req, res) => {
     error: false,
     message: 'Procesamiento correcto.',
     codigo_postal: {
-      estado: resultado.estado.toUpperCase(),
+      estado: quitarAcentos(resultado.estado).toUpperCase(),
       estado_abreviatura: obtenerAbreviatura(resultado.estado),
       municipio: resultado.municipio.toUpperCase(),
       centro_reparto: cp.substring(0, 5),
@@ -53,6 +53,11 @@ app.get('/codigo_postal/:cp', (req, res) => {
 
   res.json(respuesta);
 });
+
+// Función para quitar acentos
+function quitarAcentos(texto) {
+  return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
 
 // Función auxiliar para obtener abreviaturas de estados
 function obtenerAbreviatura(estado) {
@@ -114,7 +119,7 @@ app.get('/estados', (req, res) => {
     { ESTADO_ID: '16', ESTADO: 'MICHOACAN DE OCAMPO', EDO1: 'MIC', RANGO1: '58000', RANGO2: '61999' },
     { ESTADO_ID: '17', ESTADO: 'MORELOS', EDO1: 'MOR', RANGO1: '62000', RANGO2: '62999' },
     { ESTADO_ID: '18', ESTADO: 'NAYARIT', EDO1: 'NAY', RANGO1: '63000', RANGO2: '63999' },
-    { ESTADO_ID: '19', ESTADO: 'NUEVO LEON', EDO1: 'NL', RANGO1: '64000', RANGO2: '67999' },
+    { ESTADO_ID: '19', ESTADO: 'NUEVO LEÓN', EDO1: 'NL', RANGO1: '64000', RANGO2: '67999' },
     { ESTADO_ID: '20', ESTADO: 'OAXACA', EDO1: 'OAX', RANGO1: '68000', RANGO2: '71999' },
     { ESTADO_ID: '21', ESTADO: 'PUEBLA', EDO1: 'PUE', RANGO1: '72000', RANGO2: '75999' },
     { ESTADO_ID: '22', ESTADO: 'QUERETARO', EDO1: 'QRO', RANGO1: '76000', RANGO2: '76999' },
